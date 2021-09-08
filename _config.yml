@@ -91,44 +91,21 @@ analytics:
 author:
   name             : "Mathew Keller"
   avatar           : "/assets/images/bio-photo.JPG"
-  bio              : "Studying dynamic systems and controls at the University of Texas."
+  bio              : "Studying dynamic systems and control at the University of Texas."
   location         : "Austin, Texas"
-  email            : 
   links:
-    - label: "Email"
+    - label: "makeller1@utexas.edu"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:makeller1@utexas.edu"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/makeller1/"
 
-# Site Footer
-# footer:
-#  links:
-#    - label: "Twitter"
-#      icon: "fab fa-fw fa-twitter-square"
-#      # url:
-#    - label: "Facebook"
-#      icon: "fab fa-fw fa-facebook-square"
-#      # url:
-#    - label: "GitHub"
-#      icon: "fab fa-fw fa-github"
-#      # url:
-#    - label: "GitLab"
-#      icon: "fab fa-fw fa-gitlab"
-#      # url:
-#    - label: "Bitbucket"
-#      icon: "fab fa-fw fa-bitbucket"
-#     # url:
-#    - label: "Instagram"
-#      icon: "fab fa-fw fa-instagram"
-#      # url:
-
-
 # Reading Files
 include:
   - .htaccess
-  - _pages
+  - _pages #Maybe should be ["_pages"] ? 
+  
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
@@ -162,14 +139,12 @@ keep_files:
 encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
-
 # Conversion
 markdown: kramdown
 highlighter: rouge
 lsi: false
 excerpt_separator: "\n\n"
 incremental: false
-
 
 # Markdown Processing
 kramdown:
@@ -194,7 +169,6 @@ permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
 
 # Plugins (previously gems:)
 plugins:
@@ -247,8 +221,17 @@ compress_html:
   ignore:
     envs: development
 
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /:collection/:path/
+  research:
+    output: true
+    permalink: /:collection/:path/
 
-# Defaults
+# Default settings for markdown and html files
+teaser: "/assets/images/default-image.jpg" #Default teaser image
 defaults:
   # _posts
   - scope:
@@ -259,5 +242,19 @@ defaults:
       author_profile: true
       read_time: false
       comments: # true
-      share: true
+      share: false
       related: true
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+  # projects
+  - scope:
+      path: "_projects"
+    values:
+      layout: single
+      author_profile: true
+      
