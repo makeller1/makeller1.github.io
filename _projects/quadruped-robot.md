@@ -5,4 +5,9 @@ header:
   teaser: "/assets/images/pupper-teaser.png"
 ---
 
-This is the page for the pupper project. Ideally it will link to other pages to see the details of each aspect of the project.
+This is the page for the Pupper quadruped project. Eventually it will have a table of contents for organization.
+# Testing out latex
+
+$$ \nabla_\boldsymbol{x} J(\boldsymbol{x}) $$
+
+The Pupper 

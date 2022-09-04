@@ -4,6 +4,11 @@ title:  "I have answers to this super niche problem!"
 ---
 Here's an example post demonstrating some syntax.
 
+# Testing out latex
+
+$$ \nabla_\boldsymbol{x} J(\boldsymbol{x}) $$
+
+
 {% highlight python %}
 for x in results:
   print(x)
