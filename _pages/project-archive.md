@@ -6,4 +6,4 @@ collection: projects
 entries_layout: grid
 classes: wide
 ---
-Interesting projects combining various disciplines and languages that I've worked on in graduate school.
+Interesting projects I've worked on in graduate school.

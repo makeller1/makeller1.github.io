@@ -37,7 +37,7 @@ A task is a desired body acceleration in the operational (body translation/rotat
 
 $$\ddot x^d = \ddot x^{ff} + K_p (x^d - x) + K_d(\dot x^d - \dot x)$$
 
-Given \(n\) tasks, the controller is posed as a convex optimization problem to find the optimal joint accelerations and reaction forces that minimize the $$L^2$$ norm of the task tracking error:
+Given $n something$ tasks, the controller is posed as a convex optimization problem to find the optimal joint accelerations and reaction forces that minimize the $L^2$ norm of the task tracking error:
 
 $$
 \begin{aligned}
