@@ -8,7 +8,6 @@ Here's an example post demonstrating some syntax.
 
 $$ \nabla_\boldsymbol{x} J(\boldsymbol{x}) $$
 
-
 {% highlight python %}
 for x in results:
   print(x)
