@@ -45,7 +45,7 @@ Given $n$ tasks, the controller is posed as a quadratic program to find the opti
 <span>
 
 $$\begin{aligned}
-& \underset{\ddot{\textbf{q}}, \ \textbf{F}_r}{\text{minimize}}
+& \underset{\ddot{\textbf{q}}, \, \textbf{F}_r}{\text{minimize}}
 & & \sum_i^n{\omega_i||\textbf{J}_i \ddot{\textbf{q}} + \dot{\textbf{J}_i}\dot{\textbf{q}} - \ddot{\textbf{x}}_i^d||^2 + \omega_f ||\textbf{F}_d-\textbf{F}_r||^2} 
 \\
 & \text{subject to}
