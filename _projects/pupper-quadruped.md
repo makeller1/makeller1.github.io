@@ -42,9 +42,9 @@ $$\ddot{\textbf{x}}^d = \ddot{\textbf{x}}^{ff} + \textbf{K}_p (\textbf{x}^d - \t
 Notice the task is calculated using feedback on the position error $(\textbf{x}^d - \textbf{x})$ and velocity error $(\dot{\textbf{x}}^d - \dot{\textbf{x}})$. Thus, we can track a desired position or velocity by tracking the desired acceleration. 
 
 Given $n$ tasks, the controller is posed as a quadratic program to find the optimal joint accelerations and reaction forces that minimize the $L^2$ norm of the task tracking error:
+<span>
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & \underset{\ddot{\textbf{q}}, \ \textbf{F}_r}{\text{minimize}}
 & & \sum_i^n{\omega_i||\textbf{J}_i \ddot{\textbf{q}} + \dot{\textbf{J}_i}\dot{\textbf{q}} - \ddot{\textbf{x}}_i^d||^2 + \omega_f ||\textbf{F}_d-\textbf{F}_r||^2} 
 \\
@@ -56,9 +56,9 @@ $$
 \\ 
 &
 & & \boldsymbol{\tau}_{min} \le \boldsymbol{\tau}^{cmd} \le \boldsymbol{\tau}_{max}
-\end{aligned}
-$$
+\end{aligned}$$
 
+</span>
 Desired reaction forces $\textbf{F}_d$ are also tracked for smooth liftoff/touch down or otherwise if provided by a high level planner. The weights $\{\omega_i\}$ define the task priorities, but large tracking errors can make lower priority tasks take precedence unless the weights are seperated by several orders of magnitude. To prevent slipping, Coulomb friction cone constraints are linearized into [pyramid cones](https://scaron.info/robot-locomotion/friction-cones.html) represented by $\textbf{U} \textbf{F}_r \ge \textbf{0}$. 
 
 The controller uses the *full* rigid body dynamics, so a compromise must be made for real-time control: the solution is an instantaneous optimization of one point in time. Doing so lets us treat the non-linear terms as constants and keep the problem convex for fast and guaranteed convergence. 
