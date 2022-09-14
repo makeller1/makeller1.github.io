@@ -1,6 +1,6 @@
 ---
 classes: wide
-excerpt: "Whole-Body Control of the Stanford Pupper."
+excerpt: "Whole Body Control of the Stanford Pupper."
 header:
   teaser: "/assets/images/pupper-project/pupper-standing.jpg"
 ---
@@ -32,7 +32,7 @@ The controller is written in C++ for performance and embedded deployment. Light-
 The hip, shoulder, and elbow joints are composed of brushless DC motors that provide 12 actuated degrees of freedom. The motors provide feedback on the current and angular position through an incremental encoder. Low level current control runs on dedicated motor controllers at 1000 Hz. A 9 dof IMU provides feedback on angular position and velocity. A micro controller communicates with the motor controllers (I2C) and host computer (USB Serial), performs filtering and sensor fusion, and takes over high level control when faults are encountered. -->
 
 # Whole Body Control
-Whole Body Control (WBC) describes a controller for an underactuated system that allocates degrees of freedom to more than one desired task (for instance, lift a foot and maintain balance are two tasks needed for locomotion). The Implicit Hierarchical Whole Body Controller (IHWBC) is a type of WBC that defines a soft hierarchy among the tasks. Doing so ensures more important tasks like balance are executed when tasks conflict, which is quite common. 
+Whole Body Control (WBC) describes a controller for an underactuated system that allocates degrees of freedom to more than one desired task (for instance, lift a foot and maintain balance are two tasks needed for locomotion). The Implicit Hierarchical Whole Body Controller (IHWBC) is a type of WBC that defines a soft hierarchy among the tasks. Doing so ensures more important tasks like balance take priority when tasks conflict, which is quite common. 
 
 A task is a desired body acceleration in the operational (body translation/rotation) or joint space:
 
@@ -45,7 +45,7 @@ Given $n$ tasks, the controller is posed as a quadratic program to find the opti
 
 $$
 \begin{aligned}
-& \underset{\ddot q, F_r}{\text{minimize}}
+& \underset{\ddot{\textbf{q}}, \ \textbf{F}_r}{\text{minimize}}
 & & \sum_i^n{\omega_i||\textbf{J}_i \ddot{\textbf{q}} + \dot{\textbf{J}_i}\dot{\textbf{q}} - \ddot{\textbf{x}}_i^d||^2 + \omega_f ||\textbf{F}_d-\textbf{F}_r||^2} 
 \\
 & \text{subject to}
@@ -64,18 +64,30 @@ Desired reaction forces $\textbf{F}_d$ are also tracked for smooth liftoff/touch
 The controller uses the *full* rigid body dynamics, so a compromise must be made for real-time control: the solution is an instantaneous optimization of one point in time. Doing so lets us treat the non-linear terms as constants and keep the problem convex for fast and guaranteed convergence. 
 
 
-### Motor Model
+# Modeling
 
-The motors on the Pupper use a planetary gearbox with a 35:1 gear reduction ratio which keeps the motors compact and low-cost, but introduces inertia and friction that cannot be neglected. By building an accurate model of the motor, we can ensure the optimal torques determined by the controller are actually applied to the joints.
-
-Once modeled, the motor friction is compensated with feed-forward control, and the reflected inertia of the rotor and gears are added as independent terms to the dynamic model's mass matrix. 
+## Motor Model
 
 <p align="center">
 <video src="/assets/images/pupper-project/motor-comparison.mp4" controls="controls" style="max-height: 500px;" type="video/mp4">
 </video>
 <br>
-<em>Before compensation (left) after compensation (right) </em>
+<em>Before compensation (left) and after compensation (right) </em>
 </p>
+
+The motors on the Pupper use a planetary gearbox with a 35:1 gear reduction ratio which keeps the motors compact and low-cost, but introduces inertia and friction that cannot be neglected. By building an accurate model of the motor, we can ensure the optimal torques determined by the controller are actually applied to the joints. Specifically, the motor friction is compensated with feed-forward control and the reflected inertia of the rotor and gears are added as independent terms to the mass matrix. 
+
+![constant torque response](/assets/images/pupper-project/rotor_inertia_identification.png){: .align-right width="50%"}
+
+One way to validate the model is by applying a constant torque with zero load on the motor and measuring the angular velocity. The velocity should be linear after the transients of the low-level current controller. Doing so also allows us to estimate the reflected inertia with $I = \tau / \alpha$ where $\alpha$ is the slope of the curve. 
+
+
+<!-- 
+<p align="center">
+<img src="/assets/images/pupper-project/rotor_inertia_identification.png" style="max-width: 450px;"><br>
+<em>Friction is compensated well and the reflected inertia is estimated with the slope</em>
+</p> -->
+
 
 <!-- PURPOSE:
 
