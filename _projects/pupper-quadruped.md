@@ -69,7 +69,7 @@ The controller uses the *full* rigid body dynamics, so a compromise must be made
 ## Motor Model
 
 <p align="center">
-<video src="/assets/images/pupper-project/motor-comparison.mp4" controls="controls" style="max-height: 500px;" type="video/mp4">
+<video src="/assets/images/pupper-project/motor-comparison.mp4" controls="controls" style="max-height: 100px;" type="video/mp4">
 </video>
 <br>
 <em>Before compensation (left) and after compensation (right) </em>
@@ -77,7 +77,7 @@ The controller uses the *full* rigid body dynamics, so a compromise must be made
 
 The motors on the Pupper use a planetary gearbox with a 35:1 gear reduction ratio which keeps the motors compact and low-cost, but introduces inertia and friction that cannot be neglected. By building an accurate model of the motor, we can ensure the optimal torques determined by the controller are actually applied to the joints. Specifically, the motor friction is compensated with feed-forward control and the reflected inertia of the rotor and gears are added as independent terms to the mass matrix. 
 
-![constant torque response](/assets/images/pupper-project/rotor_inertia_identification.png){: .align-right width="50%"}
+<img width="350" align="right" src="/assets/images/pupper-project/rotor_inertia_identification.png" alt="constant torque response">
 
 One way to validate the model is by applying a constant torque with zero load on the motor and measuring the angular velocity. The velocity should be linear after the transients of the low-level current controller. Doing so also allows us to estimate the reflected inertia with $I = \tau / \alpha$ where $\alpha$ is the slope of the curve. 
 
