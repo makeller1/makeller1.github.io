@@ -5,4 +5,4 @@ permalink: /notes/
 author_profile: true
 ---
 
-The following are lessons and learnings I deemed worth saving.
+The following are lessons and learnings I deemed worth saving for future Mat and others.
