@@ -23,6 +23,8 @@ The prototypical rider is modeled after [Paul Blart](https://en.wikipedia.org/wi
 | 1.68 $m$ | 100 $kg$ | 116 $kg \cdot m^2$ | <center>45 $kg$ </center> |
 
 ## Lumped Mass Model
+
+![lumped mass model](/assets/images/segway-project/lumped-mass-model.png){: .align-right width="50%"}
 Several simplifying assumptions are made to derive a first order approximation of the system.
 1. Small angle approximation
 2. Rider is a single rigid body
