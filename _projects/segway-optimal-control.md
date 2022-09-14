@@ -13,7 +13,7 @@ In this project I derive a model of the [Segway](https://en.wikipedia.org/wiki/S
 
 ## System Description
 
-![segway and rider](/assets/images/segway-project/segway-and-rider.png){: .align-right width="25%"}
+![segway and rider](/assets/images/segway-project/segway-and-rider.png){: .align-right width="30%"}
 The Segway is a two-wheeled personal transporter that is self-balancing thanks to its controller. In order to move, the rider shifts their center of mass in the direction they would like to travel. 
 
 The prototypical rider is modeled after [Paul Blart](https://en.wikipedia.org/wiki/Paul_Blart:_Mall_Cop) from the movie Mall Cop:
