@@ -25,7 +25,7 @@ The Pupper is an open-source torque-controlled robotic quadruped that comes pack
 
 Furthermore, by modeling the dynamics, foot contact can be detected without tactile sensors.
 
-The controller is written in C++ for performance and embedded deployment. Light-weight libraries are used: [Rigid Body Dynamics Library](https://github.com/ORB-HD/rbdl-orb) for dynamic and kinematic calculations and [OSQP](https://osqp.org/) for solving the quadratic program. [Gazebo](https://gazebosim.org) is used for testing and tuning in simulation. An accurate dynamic model of the Pupper was created by modeling the assembly in SolidWorks and extracting inertial and kinematic properties of the links.
+The controller is written in C++ for performance and embedded deployment. Light-weight libraries are used: [Rigid Body Dynamics Library](https://github.com/ORB-HD/rbdl-orb) for dynamic and kinematic calculations and [OSQP](https://osqp.org/) for solving the quadratic program. [Gazebo](https://gazebosim.org) is used for testing and tuning in simulation, and ROS is used for communication.
 
 <!-- ### Hardware
 
@@ -65,6 +65,20 @@ The controller uses the *full* rigid body dynamics, so a compromise must be made
 
 # Modeling
 
+## Quadruped Model
+<img width="400" align="right" src="/assets/images/pupper-project/solidworks-model.png" alt="SolidWorks Model">
+
+Great care was taken to create the dynamic model of the Pupper because beyond the obvious benefits of an accurate model, it is challenging to validate it. Each part was weighed and its density calculated using the part's volume assuming a homogenous mass distribution. A homogeneous assumption is reasonable for the 3D printed parts because they are thin in the directions of low infill. For the other parts, like motors and PCBs, the assumption is justified by their small volumes. Because the links are 3D printed, the kinematic measurements are within the tolerance of the printers (~1%). The parts were assembled in SolidWorks and the inertial and kinematic properties of the links were extracted noting that SolidWorks uses a [positive product-of-inertia convention](https://www.mathworks.com/help/sm/ug/specify-custom-inertia.html).
+
+
+
+Two models were then written into code, one for real-time dynamic and kinematic calculations, and another for simulation. The former was written in C++ using RBDL's modeling API. The latter was written in URDF format using the ROS package, [Xacro](http://wiki.ros.org/xacro). These models were validated against each other by comparing the measured reaction forces in simulation (Gazebo) with the optimal reaction forces calculated by the controller (WBC). The forces are nearly identical except for the initial transients caused by Gazebo's physics engine. 
+
+<p align="center">
+<img width="500" src="/assets/images/pupper-project/gazebo-vs-wbc.png" alt="Model Validation"><br>
+<em>Validation of RBDL and Gazebo model matching</em>
+</p>
+
 ## Motor Model
 
 <p align="center">
@@ -74,20 +88,17 @@ The controller uses the *full* rigid body dynamics, so a compromise must be made
 <em>Before compensation (left) and after compensation (right) </em>
 </p>
 
-The motors on the Pupper use a planetary gearbox with a 35:1 gear reduction ratio which keeps the motors compact and low-cost, but introduces inertia and friction that cannot be neglected. By building an accurate model of the motor, we can ensure the optimal torques determined by the controller are actually applied to the joints. Specifically, the motor friction is compensated with feed-forward control and the reflected inertia of the rotor and gears are added as independent terms to the mass matrix. 
+The motors on the Pupper use a planetary gearbox with a 36:1 gear reduction ratio which keeps the motors compact and low-cost, but introduces inertia and friction that cannot be neglected. By building an accurate model of the motor, we can ensure the optimal torques determined by the controller are actually applied to the joints. Specifically, the motor friction is compensated with feed-forward control and the reflected inertia are added as independent terms to the mass matrix. 
 
 <!-- ![constant torque response](/assets/images/pupper-project/rotor_inertia_identification.png){: .align-right width="50%"} -->
 
-<img width="400" align="right" src="/assets/images/pupper-project/rotor_inertia_identification.png" alt="constant torque response">
+<img width="500" align="right" src="/assets/images/pupper-project/rotor_inertia_identification.png" alt="constant torque response">
 
-One way to validate the model is by applying a constant torque with zero load on the motor and measuring the angular velocity. The velocity should be linear after the transients of the low-level current controller. Doing so also allows us to estimate the reflected inertia with $I = \tau / \alpha$ where $\alpha$ is the slope of the curve. 
+One way to validate the model is by applying a constant torque and measuring the rotor's angular velocity. If friction is properly compensated, the velocity should be linear after the initial transients of the low-level current controller. This procedure was also used to estimate the reflected inertia as
 
+$$I_{reflected} = \tau / \alpha$$ 
 
-<!-- 
-<p align="center">
-<img src="/assets/images/pupper-project/rotor_inertia_identification.png" style="max-width: 450px;"><br>
-<em>Friction is compensated well and the reflected inertia is estimated with the slope</em>
-</p> -->
+where $\alpha$ is the acceleration of the rotor (slope of linear regression). I found this estimate to be much more accurate than $I_{reflected} = 36^2 I_{rotor}$, primarily because of the difficulty of accurately measuring the inertia of the rotor and gears. 
 
 
 <!-- PURPOSE:
@@ -104,8 +115,7 @@ TLDR:
 - Involved embedded software
 - Modeled dynamics with RBDL
 - Simulated in Gazebo
-- I used sophisticated and classic control algorithms
+- Advanced and classic control algorithms
 - Link code 
 
-The Pupper is an open-source torque-controlled robotic quadruped that I wrote a dynamic controller for. 
 -->
